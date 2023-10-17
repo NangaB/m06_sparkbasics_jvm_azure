@@ -9,9 +9,22 @@ object SparkApp extends App{
 
   import sparkSession.implicits._
 
-  val people: Seq[(String, Int)] = Seq(("marek", 15), ("kasia", 12))
-  val peopleDF: Dataset[Row] = people.toDF("name", "age")
+  val hotels = sparkSession.read.format("csv")
+    .option("header" : True)
+    .load("src/main/resources/m06sparkbasics/hotels/")
 
-  peopleDF.show()
+  hotels.show()
+
+  val weather = sparkSession.read.load("src/main/resources/m06sparkbasics/weather/")
+  weather.show()
+  weather.printSchema()
+
+  private val APIKey = ""
+
+  val hotelClearDF = hotels.
+
+
+
+
 
 }
