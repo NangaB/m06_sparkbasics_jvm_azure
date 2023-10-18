@@ -97,6 +97,12 @@
       <version>${hadoop.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.byteowls</groupId>
+      <artifactId>jopencage</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+
     <!--geohash-->
     <dependency>
       <groupId>ch.hsr</groupId>
