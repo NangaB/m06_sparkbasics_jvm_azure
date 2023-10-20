@@ -8,9 +8,11 @@ object SparkApp extends App{
     .master("local")
     .getOrCreate()
 
-  val key = "IGJIhgBmC0nHhKXndiirYQy4bMS2SjN/S+441tMeSZmvqAOXyYLFju6o6HNEpj40csfbGeZlIfEX+AStz+uqXg=="
+  sparkSession.conf.set("fs.azure", "org.apache.hadoop.fs.azure.NativeAzureFileSystem")
 
-  sparkSession.conf.set("fs.azure.account.key.hotelsweather.dfs.core.windows.net", key)
+  val key = "5VJPsDnb8PuKw463UYcN0q3x4y4XhXOaYTGO/QeYXwq5mGViM4r5jr6Rh4emUUo/uR8jKadot+Cp+AStOe2VJg=="
+
+  sparkSession.conf.set("fs.azure.account.key.hotelsweather.blob.core.windows.net", key)
 
 //  sparkSession.conf.set(s"fs.azure.account.key.$outputStorageAccount", inputSaSharedKeySecret)
 
@@ -41,6 +43,6 @@ object SparkApp extends App{
   val hashUDF = sparkSession.udf.register("hashWeather", GeoService.getGeohash(_:Double, _:Double) : String)
   val weatherWithHash = weather.withColumn("hash", hashUDF(col("lng"), col("lat")))
 
-//  weatherWithHash.show()
+  weatherWithHash.show()
 //  weatherWithHash.printSchema()
 }
