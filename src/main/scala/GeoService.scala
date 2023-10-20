@@ -10,7 +10,7 @@ object GeoService {
   private val APIKey = "f8d63dc620ca4b2da1197eb2c29ae780"
   private val jOpenCageGeocoder = new JOpenCageGeocoder(APIKey)
 
-  def getGeohash(latitude: Double, longitude: Double): String =
+  def getGeohash(latitude: Double, longitude: Double) =
     if (latitude.isNaN || longitude.isNaN)
       null
     else
@@ -24,6 +24,7 @@ object GeoService {
 
     if (location == null) (NaN, NaN) else (location.getLat, location.getLng)
   }
+
 
   private def buildRequest(country: String, city: String, prettifiedAddress: String) = {
     val request = new JOpenCageForwardRequest(s"$country $city $prettifiedAddress")
