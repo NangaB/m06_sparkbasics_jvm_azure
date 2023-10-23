@@ -5,7 +5,7 @@ import com.byteowls.jopencage.model.JOpenCageForwardRequest
 import scala.Double.NaN
 
 object GeoService {
-  private val TWENTY_FIVE_KM_PRECISION = 2
+  private val TWENTY_FIVE_KM_PRECISION = 25
   private val GEOHASH_LENGTH = 4
   private val APIKey = "f8d63dc620ca4b2da1197eb2c29ae780"
   private val jOpenCageGeocoder = new JOpenCageGeocoder(APIKey)

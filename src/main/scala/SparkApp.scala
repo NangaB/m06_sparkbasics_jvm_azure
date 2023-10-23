@@ -1,4 +1,4 @@
-import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
 object SparkApp extends App{
@@ -24,13 +24,28 @@ object SparkApp extends App{
 //    .load("src/main/resources/m06sparkbasics/hotels/")
     .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
 
-  hotels.show()
-  hotels.printSchema()
+//  hotels.show()
+//  hotels.printSchema()
 
   import org.apache.spark.sql.functions.udf
-  val geoUDF = udf(GeoService.getGeolocation(_:String, _:String, _:String))
-  
-  val hotelsCleanDf = hotels.withColumn("location", geoUDF(col("country"), col("city"), col("address")))
+
+//  val geoUDF = udf(GeoService.getGeolocation(_:String, _:String, _:String))
+  val geoLat = udf(GeoService.getGeolocation(_:String, _:String, _:String)._1)
+  val geoLng = udf(GeoService.getGeolocation(_:String, _:String, _:String)._2)
+
+//  hotels.map(col("lat").isNaN -> geoUDF(col("country"), col("city"), col("address")))
+  hotels.show()
+  val hotelsCleanDf = hotels
+    .withColumn("Latitude",
+    when(col("Latitude").isNaN,
+    geoLat(col("country"), col("city"), col("address")))
+      .otherwise(col("Latitude")))
+    .withColumn("Longitude",
+      when(col("Longitude").isNaN,
+        geoLat(col("country"), col("city"), col("address")))
+        .otherwise(col("Longitude")))
+
+  hotelsCleanDf.show()
 
   val weather = sparkSession.read
     .format("parquet")
@@ -41,8 +56,11 @@ object SparkApp extends App{
 
 
   val hashUDF = sparkSession.udf.register("hashWeather", GeoService.getGeohash(_:Double, _:Double) : String)
-  val weatherWithHash = weather.withColumn("hash", hashUDF(col("lng"), col("lat")))
+  val weatherWithHash = weather.withColumn("hash", hashUDF(col("lat"), col("lng")))
 
-  weatherWithHash.show()
-//  weatherWithHash.printSchema()
+//  weatherWithHash.show()
+
+  val joined = hotelsCleanDf.join(weatherWithHash, col("hash"), "left")
+//  joined.show()
+//  joined.printSchema()
 }
