@@ -54,10 +54,13 @@ object SparkApp extends App{
   val weatherWithHash = weather.withColumn("hashed", hashUDF(col("lat"), col("lng")))
   val hotelsWithHash = hotelsCleanDf.withColumn("hashed", hashUDF(col("Latitude"), col("Longitude")))
 
-//  weatherWithHash.show()
-//  hotelsWithHash.show()
+  weatherWithHash.show()
+  hotelsWithHash.show()
 
-  val joined = hotelsWithHash.join(weatherWithHash, Seq("hashed"), "left").drop("hashed")
-  joined.show()
+  val joined = hotelsWithHash.join(weatherWithHash, col("hashed"), "left")
+//  joined.show()
+
+  joined.write.format("parquet").save()
+
 //  joined.printSchema()
 }
