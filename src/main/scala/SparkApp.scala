@@ -54,13 +54,13 @@ object SparkApp extends App{
   val weatherWithHash = weather.withColumn("hashed", hashUDF(col("lat"), col("lng")))
   val hotelsWithHash = hotelsCleanDf.withColumn("hashed", hashUDF(col("Latitude"), col("Longitude")))
 
-  weatherWithHash.show()
-  hotelsWithHash.show()
+//  weatherWithHash.show()
+//  hotelsWithHash.show()
 
-  val joined = hotelsWithHash.join(weatherWithHash, col("hashed"), "left")
+  val joined = hotelsWithHash.join(weatherWithHash, col("hashed"), "left").drop(col("hashed"))
 //  joined.show()
 
-  joined.write.format("parquet").save()
+  joined.write.format("parquet").save("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/results")
 
 //  joined.printSchema()
 }

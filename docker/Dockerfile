@@ -4,6 +4,8 @@ FROM openjdk:8-alpine
 ARG SPARK_VERSION_ARG=3.1.2
 ARG HADOOP_VERSION=3.3.1
 
+JAR_FILE = target/*.jar
+
 ENV BASE_IMAGE      openjdk:8-alpine
 ENV SPARK_VERSION   $SPARK_VERSION_ARG
 
