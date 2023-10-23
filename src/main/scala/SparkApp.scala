@@ -14,8 +14,6 @@ object SparkApp extends App{
 
   sparkSession.conf.set("fs.azure.account.key.hotelsweather.blob.core.windows.net", key)
 
-//  sparkSession.conf.set(s"fs.azure.account.key.$outputStorageAccount", inputSaSharedKeySecret)
-
   import sparkSession.implicits._
 
   val hotels = sparkSession.read
@@ -29,12 +27,9 @@ object SparkApp extends App{
 
   import org.apache.spark.sql.functions.udf
 
-//  val geoUDF = udf(GeoService.getGeolocation(_:String, _:String, _:String))
   val geoLat = udf(GeoService.getGeolocation(_:String, _:String, _:String)._1)
   val geoLng = udf(GeoService.getGeolocation(_:String, _:String, _:String)._2)
 
-//  hotels.map(col("lat").isNaN -> geoUDF(col("country"), col("city"), col("address")))
-  hotels.show()
   val hotelsCleanDf = hotels
     .withColumn("Latitude",
     when(col("Latitude").isNaN,
@@ -45,7 +40,7 @@ object SparkApp extends App{
         geoLat(col("country"), col("city"), col("address")))
         .otherwise(col("Longitude")))
 
-  hotelsCleanDf.show()
+//  hotelsCleanDf.show()
 
   val weather = sparkSession.read
     .format("parquet")
@@ -55,12 +50,14 @@ object SparkApp extends App{
 //  weather.printSchema()
 
 
-  val hashUDF = sparkSession.udf.register("hashWeather", GeoService.getGeohash(_:Double, _:Double) : String)
-  val weatherWithHash = weather.withColumn("hash", hashUDF(col("lat"), col("lng")))
+  val hashUDF = sparkSession.udf.register("hash", GeoService.getGeohash(_:Double, _:Double) : String)
+  val weatherWithHash = weather.withColumn("hashed", hashUDF(col("lat"), col("lng")))
+  val hotelsWithHash = hotelsCleanDf.withColumn("hashed", hashUDF(col("Latitude"), col("Longitude")))
 
 //  weatherWithHash.show()
+//  hotelsWithHash.show()
 
-  val joined = hotelsCleanDf.join(weatherWithHash, col("hash"), "left")
-//  joined.show()
+  val joined = hotelsWithHash.join(weatherWithHash, Seq("hashed"), "left").drop("hashed")
+  joined.show()
 //  joined.printSchema()
 }
