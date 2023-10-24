@@ -19,8 +19,8 @@ object SparkApp extends App{
   val hotels = sparkSession.read
     .format("csv")
     .option("header", "True")
-//    .load("src/main/resources/m06sparkbasics/hotels/")
-    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
+    .load("src/main/resources/m06sparkbasics/hotels/")
+//    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
 
 //  hotels.show()
 //  hotels.printSchema()
@@ -44,23 +44,24 @@ object SparkApp extends App{
 
   val weather = sparkSession.read
     .format("parquet")
-//    .load("src/main/resources/m06sparkbasics/weather/")
-    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/weather")
+    .load("src/main/resources/m06sparkbasics/weather/")
+//    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/weather")
 //  weather.show()
 //  weather.printSchema()
 
 
   val hashUDF = sparkSession.udf.register("hash", GeoService.getGeohash(_:Double, _:Double) : String)
   val weatherWithHash = weather.withColumn("hashed", hashUDF(col("lat"), col("lng")))
-  val hotelsWithHash = hotelsCleanDf.withColumn("hashed", hashUDF(col("Latitude"), col("Longitude")))
+  val hotelsWithHash = hotelsCleanDf.withColumn("ha", hashUDF(col("Latitude"), col("Longitude")))
 
 //  weatherWithHash.show()
 //  hotelsWithHash.show()
 
-  val joined = hotelsWithHash.join(weatherWithHash, col("hashed"), "left").drop(col("hashed"))
-//  joined.show()
 
-  joined.write.format("parquet").save("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/results")
+  val joined2 = hotelsWithHash.join(weatherWithHash, hotelsWithHash("ha") === weatherWithHash("hashed"), "left").select("City")
+
+  joined2.show()
+//  joined.write.format("parquet").save("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/results")
 
 //  joined.printSchema()
 }
