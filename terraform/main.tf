@@ -1,6 +1,10 @@
 # Setup azurerm as a state backend
 terraform {
   backend "azurerm" {
+        storage_account_name = "stbeatawesteurope"
+        container_name = "tfstate"
+        key = "prod.terraform.tfstate"
+        access_key = "5eTqLLUHfFI5/lGPmRKgtKcvDnyXMv17Gptbg0p7Q/zdS7ttc16zpBZ9SvLlFddYwBofmEnUhYJE+ASt4JTICA=="
   }
 }
 
@@ -27,7 +31,7 @@ resource "azurerm_resource_group" "bdcc" {
 
 resource "azurerm_storage_account" "bdcc" {
   depends_on = [
-    azurerm_resource_group.bdcc]
+  azurerm_resource_group.bdcc]
 
   name = "st${var.ENV}${var.LOCATION}"
   resource_group_name = azurerm_resource_group.bdcc.name
