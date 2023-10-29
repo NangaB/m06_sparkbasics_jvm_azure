@@ -1,8 +1,4 @@
-import ch.hsr.geohash.GeoHash
-import com.byteowls.jopencage.JOpenCageGeocoder
-import com.byteowls.jopencage.model.JOpenCageForwardRequest
-
-import scala.Double.NaN
+package org.apache.beata
 
 object GeoService {
   private val TWENTY_FIVE_KM_PRECISION = 25
