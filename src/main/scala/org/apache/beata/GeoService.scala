@@ -1,5 +1,11 @@
 package org.apache.beata
 
+import ch.hsr.geohash.GeoHash
+import com.byteowls.jopencage.JOpenCageGeocoder
+import com.byteowls.jopencage.model.JOpenCageForwardRequest
+
+import scala.Double.NaN
+
 object GeoService {
   private val TWENTY_FIVE_KM_PRECISION = 25
   private val GEOHASH_LENGTH = 4
@@ -20,7 +26,6 @@ object GeoService {
 
     if (location == null) (NaN, NaN) else (location.getLat, location.getLng)
   }
-
 
   private def buildRequest(country: String, city: String, prettifiedAddress: String) = {
     val request = new JOpenCageForwardRequest(s"$country $city $prettifiedAddress")

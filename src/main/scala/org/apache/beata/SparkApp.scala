@@ -19,8 +19,8 @@ object SparkApp extends App {
   val hotels = sparkSession.read
     .format("csv")
     .option("header", "True")
-    //    .load("src/main/resources/m06sparkbasics/hotels/")
-    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
+        .load("src/main/resources/m06sparkbasics/hotels/")
+//    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
 
   //  hotels.show()
   //  hotels.printSchema()
@@ -44,8 +44,8 @@ object SparkApp extends App {
 
   val weather = sparkSession.read
     .format("parquet")
-    //    .load("src/main/resources/m06sparkbasics/weather/")
-    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/weather")
+        .load("src/main/resources/m06sparkbasics/weather/")
+//    .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/weather")
   //  weather.show()
   //  weather.printSchema()
 
