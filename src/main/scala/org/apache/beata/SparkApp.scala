@@ -13,7 +13,7 @@ object SparkApp extends App{
 
   sparkSession.conf.set("fs.azure", "org.apache.hadoop.fs.azure.NativeAzureFileSystem")
 
-  val key = AccessService.getAccess("AZKEY")
+  val key = AccessService.getAccess("azkey")
 
   sparkSession.conf.set("fs.azure.account.key.hotelsweather.blob.core.windows.net", key)
 

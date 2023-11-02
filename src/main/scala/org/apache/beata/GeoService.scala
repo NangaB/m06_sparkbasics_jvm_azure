@@ -10,7 +10,7 @@ object GeoService {
   private val TWENTY_FIVE_KM_PRECISION = 25
   private val GEOHASH_LENGTH = 4
 
-  private val APIKey = AccessService.getAccess("GEOKEY")
+  private val APIKey = AccessService.getAccess("apikey")
   private val jOpenCageGeocoder = new JOpenCageGeocoder(APIKey)
 
 
