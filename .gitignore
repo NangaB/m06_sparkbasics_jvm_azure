@@ -6,5 +6,7 @@
 /target
 *.iml
 
+config.properties
+
 ### Mac ###
 .DS_Store

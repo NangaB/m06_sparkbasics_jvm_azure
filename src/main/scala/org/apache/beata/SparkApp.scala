@@ -3,16 +3,17 @@ package org.apache.beata
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, when}
 
-object SparkApp extends App {
+
+object SparkApp extends App{
 
   val sparkSession: SparkSession = SparkSession.builder()
     .appName("test-app")
-//    .master("local")
+    .master("local")
     .getOrCreate()
 
   sparkSession.conf.set("fs.azure", "org.apache.hadoop.fs.azure.NativeAzureFileSystem")
 
-  val key = "5VJPsDnb8PuKw463UYcN0q3x4y4XhXOaYTGO/QeYXwq5mGViM4r5jr6Rh4emUUo/uR8jKadot+Cp+AStOe2VJg=="
+  val key = AccessService.getAccess("AZKEY")
 
   sparkSession.conf.set("fs.azure.account.key.hotelsweather.blob.core.windows.net", key)
 
@@ -22,8 +23,8 @@ object SparkApp extends App {
 //        .load("src/main/resources/m06sparkbasics/hotels/")
     .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/hotels")
 
-  //  hotels.show()
-  //  hotels.printSchema()
+    hotels.show()
+    hotels.printSchema()
 
   import org.apache.spark.sql.functions.udf
 
@@ -46,15 +47,15 @@ object SparkApp extends App {
     .format("parquet")
 //        .load("src/main/resources/m06sparkbasics/weather/")
     .load("wasbs://hotwea@hotelsweather.blob.core.windows.net/m06sparkbasics/weather")
-  //  weather.show()
-  //  weather.printSchema()
+    weather.show()
+//    weather.printSchema()
 
 
   val hashUDF = sparkSession.udf.register("hash", GeoService.getGeohash(_: Double, _: Double): String)
   val weatherWithHash = weather.withColumn("hashed", hashUDF(col("lat"), col("lng")))
   val hotelsWithHash = hotelsCleanDf.withColumn("ha", hashUDF(col("Latitude"), col("Longitude")))
 
-  //  weatherWithHash.show()
+    weatherWithHash.show()
   //  hotelsWithHash.show()
 
 

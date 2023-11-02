@@ -135,6 +135,11 @@
       <version>3.8.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.typesafe.scala-logging</groupId>
+      <artifactId>scala-logging_2.12</artifactId>
+      <version>3.5.0</version>
+    </dependency>
   </dependencies>
 
 
@@ -273,6 +278,15 @@
           </execution>
         </executions>
       </plugin>
+
+
+
+
+
+
+
+
+
       <!--docker build-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
