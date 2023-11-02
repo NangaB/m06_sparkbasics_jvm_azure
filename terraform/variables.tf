@@ -1,5 +1,5 @@
 variable "ENV" {
-  default = "beatao"
+  default = "abcde"
   type = string
   description = "The prefix which should be used for all resources in this environment. Make it unique, like ksultanau."
 }

@@ -1,10 +1,10 @@
 # Setup azurerm as a state backend
 terraform {
   backend "azurerm" {
-        storage_account_name = "stbeatawesteurope"
-        container_name = "tfstate"
-        key = "prod.terraform.tfstate"
-        access_key = "5eTqLLUHfFI5/lGPmRKgtKcvDnyXMv17Gptbg0p7Q/zdS7ttc16zpBZ9SvLlFddYwBofmEnUhYJE+ASt4JTICA=="
+    storage_account_name = "hotelsweather"
+    container_name       = "hotwea"
+    key                  = "prod.terraform.hotwea"
+    access_key = "5VJPsDnb8PuKw463UYcN0q3x4y4XhXOaYTGO/QeYXwq5mGViM4r5jr6Rh4emUUo/uR8jKadot+Cp+AStOe2VJg=="
   }
 }
 
