@@ -4,7 +4,7 @@ terraform {
     storage_account_name = "hotelsweather"
     container_name       = "hotwea"
     key                  = "prod.terraform.hotwea"
-    access_key = "5VJPsDnb8PuKw463UYcN0q3x4y4XhXOaYTGO/QeYXwq5mGViM4r5jr6Rh4emUUo/uR8jKadot+Cp+AStOe2VJg=="
+    access_key = ""
   }
 }
 
